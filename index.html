@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A professional, high-performance website template featuring bento-grid layout and modern CSS architecture.">
+    <title>Modern Bento Box Template | Production Ready</title>
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Bento Box Industries",
+      "url": "https://www.example.com",
+      "logo": "https://www.example.com/logo.png",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+1-555-555-5555",
+        "contactType": "Customer Service"
+      }
+    }
+    </script>
+
+    <style>
+        /* CSS VARIABLES & RESET
+         * Using HSL for easy color manipulation and programmatic theme switching.
+         */
+        :root {
+            /* Typography */
+            --font-main: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --font-size-base: 1rem;
+            --font-size-h1: clamp(2.5rem, 5vw, 4rem);
+            --font-size-h2: clamp(1.8rem, 3vw, 2.5rem);
+            
+            /* Spacing */
+            --space-sm: 1rem;
+            --space-md: 2rem;
+            --space-lg: 4rem;
+            --space-xl: 8rem;
+            --container-width: 1280px;
+
+            /* Light Theme (Default) */
+            --color-bg: #ffffff;
+            --color-surface: #f4f4f5;
+            --color-surface-hover: #e4e4e7;
+            --color-text: #18181b;
+            --color-text-muted: #52525b;
+            --color-primary: #2563eb;
+            --color-primary-hover: #1d4ed8;
+            --color-on-primary: #ffffff;
+            --border-radius: 12px;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+
+        /* Dark Theme Override */
+        [data-theme="dark"] {
+            --color-bg: #09090b;
+            --color-surface: #18181b;
+            --color-surface-hover: #27272a;
+            --color-text: #fafafa;
+            --color-text-muted: #a1a1aa;
+            --color-primary: #3b82f6;
+            --color-primary-hover: #60a5fa;
+            --color-on-primary: #ffffff;
+        }
+
+        /* Reset */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        html { scroll-behavior: smooth; }
+        
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            font-family: var(--font-main);
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Accessibility Skip Link */
+        .skip-link {
+            position: absolute; top: -999px; left: 0;
+            background: var(--color-primary); color: var(--color-on-primary);
+            padding: 1rem; z-index: 1000; text-decoration: none;
+        }
+        .skip-link:focus { top: 0; }
+        
+        /* Focus States */
+        :focus-visible {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 4px;
+        }
+
+        /* Utilities */
+        .container {
+            max-width: var(--container-width);
+            margin-inline: auto;
+            padding-inline: var(--space-md);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--color-primary);
+            color: var(--color-on-primary);
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+        .btn:hover { background-color: var(--color-primary-hover); }
+
+        /* HEADER */
+        .site-header {
+            position: sticky;
+            top: 0;
+            background-color: var(--color-bg);
+            border-bottom: 1px solid var(--color-surface);
+            z-index: 100;
+            padding-block: var(--space-sm);
+        }
+
+        .header-inner {
+            display: grid;
+            /* Mobile: 2 columns (Logo space | Toggle space) */
+            grid-template-columns: 1fr auto; 
+            /* Mobile: 2 rows (Logo+Toggle | CTA) */
+            grid-template-rows: auto auto;   
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .brand {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--color-text);
+            text-decoration: none;
+            
+            /* Grid placement: Top Left */
+            grid-column: 1;
+            grid-row: 1;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 1px solid var(--color-text-muted);
+            color: var(--color-text);
+            border-radius: 50%;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: grid;
+            place-items: center;
+            
+            /* Grid placement: Top Right */
+            grid-column: 2;
+            grid-row: 1;
+        }
+
+        .nav-actions {
+            /* Grid placement: Bottom Row, Full Width */
+            grid-column: 1 / -1; /* Span all columns */
+            grid-row: 2;
+        }
+
+        /* Helper to make the button full width on mobile only */
+        .btn-block {
+            width: 100%;
+        }
+
+        /* DESKTOP LAYOUT (1200px+ or 768px+ depending on preference)  */
+        /* Here we use 768px (Tablet) as the breakpoint to switch to the single row. */
+        @media (min-width: 768px) {
+            .header-inner {
+                /* Switch back to Flexbox for a single row */
+                display: flex;
+                gap: 1.5rem;
+            }
+
+            .brand {
+                margin-right: auto; /* Pushes everything else to the right */
+            }
+
+            /* Reset grid placements */
+            .nav-actions {
+                width: auto;
+                grid-column: auto;
+                grid-row: auto;
+            }
+
+            .theme-toggle {
+                grid-column: auto;
+                grid-row: auto;
+            }
+            
+            .btn-block {
+                width: auto; /* Return button to natural width */
+            }
+        }
+
+        /* HERO */
+        .hero {
+            position: relative;
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            background-color: oklch(0.8607 0 0 / 0.3); /* Semi-transparent background for better text readability */
+            /* Placeholder image from Unsplash */
+            background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1600&q=80');
+            background-size: cover;
+            background-position: center;
+            color: #ffffff;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            
+            padding: var(--space-lg);
+        }
+
+        .hero h1 {
+            font-size: var(--font-size-h1);
+            line-height: 1.1;
+            margin-bottom: var(--space-md);
+        }
+
+        .hero p {
+            font-size: 1.75rem;
+            line-height: 1.5;
+            margin-bottom: var(--space-md);
+        }
+
+        .hero h1, .hero p {
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        /* BENTO BOX LAYOUT (Main Content) */
+        /* Mobile: Single column
+        /* Desktop: Complex Grid */
+        .bento-section {
+            padding-block: var(--space-xl);
+        }
+
+        .bento-grid {
+            display: grid;
+            gap: var(--space-md);
+            grid-template-columns: 1fr; /* Mobile default */
+            grid-auto-rows: minmax(250px, auto);
+        }
+
+        .bento-card {
+            background-color: var(--color-surface);
+            padding: var(--space-md);
+            border-radius: var(--border-radius);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .bento-card:hover {
+            transform: translateY(-4px);
+            background-color: var(--color-surface-hover);
+            box-shadow: var(--shadow);
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--color-primary);
+        }
+
+        @media (min-width: 768px) {
+            .bento-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .bento-grid {
+                /* 4-column asymmetric grid */
+                grid-template-columns: repeat(4, 1fr);
+                grid-template-rows: repeat(2, 300px);
+            }
+
+            /* Span definitions for the "Bento" look */
+            .card-large {
+                grid-column: span 2;
+                grid-row: span 2;
+            }
+            
+            .card-tall {
+                grid-column: span 1;
+                grid-row: span 2;
+            }
+
+            .card-wide {
+                grid-column: span 2;
+            }
+        }
+
+        /* FOOTER */
+        .site-footer {
+            background-color: var(--color-surface);
+            padding-block: var(--space-xl) var(--space-lg);
+            margin-top: var(--space-xl);
+        }
+
+        .footer-grid {
+            display: grid;
+            gap: var(--space-lg);
+            grid-template-columns: 1fr;
+        }
+
+        @media (min-width: 768px) {
+            .footer-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .footer-col h3 {
+            margin-bottom: var(--space-sm);
+            color: var(--color-text);
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-col a {
+            color: var(--color-text-muted);
+            text-decoration: none;
+        }
+        
+        .footer-col a:hover {
+            color: var(--color-primary);
+            text-decoration: underline;
+        }
+
+        @media (min-width: 768px) {
+        }
+    </style>
+</head>
+<body>
+
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="#" class="brand">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zm0 9l2.5-1.25L12 8.5l-2.5 1.25L12 11zm0 2.5l-5-2.5-5 2.5L12 22l10-8.5-5-2.5-5 2.5z"/></svg>
+                <span>BentoBoxCorp</span>
+            </a>
+
+            <nav class="nav-actions">
+                <a href="#contact" class="btn btn-block">Get Started</a>
+            </nav>
+            <button class="theme-toggle show-dttb" id="theme-toggle" aria-label="Toggle dark mode">
+                <span aria-hidden="true">&#9680;</span>
+            </button>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <section class="hero" aria-label="Introduction">
+            <div class="container hero-content">
+                <h1>Scalable architecture for modern businesses.</h1>
+                <p>A production-ready foundation designed for performance, accessibility, and rapid deployment.</p>
+                <a href="#bento-grid" class="btn">Explore Features</a>
+            </div>
+        </section>
+
+        <section id="bento-grid" class="bento-section">
+            <div class="container">
+                <div class="header-text" style="margin-bottom: var(--space-lg)">
+                    <h2>Core Capabilities</h2>
+                    <p style="color: var(--color-text-muted)">Designed to adapt to your content requirements.</p>
+                </div>
+
+                <div class="bento-grid">
+                    <article class="bento-card card-large">
+                        <div>
+                            <h3>Performance First</h3>
+                            <p style="margin-top: 1rem; color: var(--color-text-muted);">
+                                Built with a zero-bloat philosophy. We utilize native CSS grid capabilities and semantic HTML to ensure high LightHouse scores and lightning-fast load times.
+                            </p>
+                        </div>
+                        <a href="#" style="margin-top: 1rem; color: var(--color-primary); font-weight:600; text-decoration:none;">Learn about speed &rarr;</a>
+                    </article>
+
+                    <article class="bento-card">
+                        <h3>Security</h3>
+                        <p style="color: var(--color-text-muted);">Enterprise-grade protection standards included.</p>
+                    </article>
+
+                    <article class="bento-card card-tall" style="background: var(--color-primary); color: white;">
+                        <h3 style="color: white;">Integration</h3>
+                        <p style="color: rgba(255,255,255,0.9);">
+                            Seamlessly connects with your existing API stack.
+                            <br><br>
+                            Supports:
+                            <br>• REST
+                            <br>• GraphQL
+                            <br>• Webhooks
+                        </p>
+                    </article>
+
+                    <article class="bento-card">
+                        <h3>Responsive</h3>
+                        <p style="color: var(--color-text-muted);">Fluid layouts that adapt to any viewport.</p>
+                    </article>
+
+                    <article class="bento-card card-wide">
+                        <h3>Analytics Ready</h3>
+                        <p style="color: var(--color-text-muted);">Pre-configured data attributes to hook into GA4 or custom telemetry solutions without rewriting the DOM.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <h3>BentoBoxCorp</h3>
+                <p style="color: var(--color-text-muted);">
+                    Building better digital experiences with semantic foundations.
+                </p>
+            </div>
+            <div class="footer-col">
+                <h3>Platform</h3>
+                <ul>
+                    <li><a href="#">Solutions</a></li>
+                    <li><a href="#">Integration</a></li>
+                    <li><a href="#">Pricing</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Company</h3>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="container" style="margin-top: var(--space-md); padding-top: var(--space-md); border-top: 1px solid rgba(0,0,0,0.1); text-align: center; color: var(--color-text-muted); font-size: 0.875rem;">
+            &copy; <span id="year"></span> BentoBoxCorp Industries. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        (function() {
+            const toggleBtn = document.getElementById('theme-toggle');
+            const htmlEl = document.documentElement;
+            const storageKey = 'theme-preference';
+
+            // 1. Check for saved user preference, if none, check system preference
+            const getPreferredTheme = () => {
+                const storedTheme = localStorage.getItem(storageKey);
+                if (storedTheme) {
+                    return storedTheme;
+                }
+                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            };
+
+            // 2. Apply the theme
+            const setTheme = (theme) => {
+                htmlEl.setAttribute('data-theme', theme);
+                localStorage.setItem(storageKey, theme);
+            };
+
+            // Initialize
+            setTheme(getPreferredTheme());
+
+            // 3. Toggle Logic
+            toggleBtn.addEventListener('click', () => {
+                const currentTheme = htmlEl.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                setTheme(newTheme);
+            });
+        })();
+
+        document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
